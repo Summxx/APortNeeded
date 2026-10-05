@@ -1,0 +1,37 @@
+package com.summax.apn.architecture.common.shape.transformation;
+
+import com.summax.apn.architecture.common.block.state.BlockStateShape;
+import com.summax.apn.architecture.common.shape.orientation.ShapeOrientation;
+import com.summax.apn.architecture.core.math.ITrans3;
+import org.jetbrains.annotations.NotNull;
+
+/**
+ * Used for resolving a set of ShapeOrientationProperties into a Trans3 that can be used to transform a shape for collision or rendering.
+ * <p>
+ * The results of this resolver are not cached, and ideally the results should be stored on the state that the shape is being rendered for.
+ */
+@FunctionalInterface
+public interface IShapeTransformationResolver {
+
+    /**
+     * Resolves the given ShapeOrientation into a Trans3 that can be used to transform a shape for collision or rendering.
+     *
+     * @param orientation the orientation to resolve.
+     * @return the resolved transformation.
+     */
+    @NotNull
+    ITrans3 resolve(@NotNull ShapeOrientation orientation);
+
+
+    /**
+     * Resolves the given BlockStateShape into a Trans3 that can be used to transform a shape for collision or rendering.
+     *
+     * @param state the state to resolve.
+     * @return the resolved transformation.
+     */
+    @NotNull
+    default ITrans3 resolve(@NotNull BlockStateShape state) {
+        return this.resolve(state.getOrientation());
+    }
+
+}

@@ -1,0 +1,107 @@
+package com.summax.apn.architecture.common.block;
+
+import com.google.common.collect.ImmutableList;
+import com.summax.apn.architecture.client.ui.UISawbench;
+import com.summax.apn.architecture.common.ArchitectureMod;
+import com.summax.apn.architecture.common.block.container.ContainerSawbench;
+import com.summax.apn.architecture.common.block.state.BlockStateArchitecture;
+import com.summax.apn.architecture.common.ui.ArchitectureUIHooks;
+import com.summax.apn.architecture.common.ui.CreateMenuContext;
+import com.summax.apn.architecture.common.ui.IElementProvider;
+import com.summax.apn.architecture.core.math.IMatrix4Immutable;
+import com.summax.apn.architecture.core.math.ITrans3;
+import com.summax.apn.architecture.core.math.ITrans3Immutable;
+import com.summax.apn.architecture.core.model.objson.OBJSON;
+import com.summax.apn.architecture.core.physics.AABB;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.CompletableFuture;
+
+public class BlockSawbench extends BlockArchitecture implements IElementProvider<ContainerSawbench> {
+
+    public static final OBJSON MODEL = OBJSON.fromResource(new ResourceLocation(ArchitectureMod.MOD_ID, "block/sawbench_all.objson"));
+    private final static EnumProperty<Direction> FACING = EnumProperty.create("facing", Direction.class, Direction.Plane.HORIZONTAL);
+
+    public BlockSawbench() {
+        super(Properties.of().mapColor(MapColor.WOOD).strength(2.5F).sound(SoundType.WOOD));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(FACING);
+    }
+
+    @Override
+    public ITrans3Immutable getTransformForState(BlockStateArchitecture state) {
+        var facing = state.getValue(FACING);
+        // The sawbench model faces south by default, this isn't standard, so we handle the rotation with a switch.
+        var degrees = switch (facing) {
+            case NORTH -> 180;
+            case EAST -> 90;
+            case WEST -> 270;
+            default -> 0;
+        };
+        return ITrans3.ofImmutable(IMatrix4Immutable.ofRotationXYZ(0.5, 0.5, 0.5, 0, degrees, 0));
+    }
+
+    @Override
+    public CompletableFuture<ImmutableList<AABB>> getBoxesForState(BlockStateArchitecture state) {
+        // The results of this are cached on the state object, so don't worry too much about performance.
+        var transform = this.getTransformForState(state);
+        return MODEL.voxelizer().voxelize().thenApply(v -> v.stream().map(transform::transformAABB).collect(ImmutableList.toImmutableList()));
+    }
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+    }
+
+    @Override
+    @NotNull
+    public InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
+        if (!player.isShiftKeyDown()) {
+            if (!level.isClientSide()) {
+                ArchitectureUIHooks.openGui((ServerPlayer) player, this, pos);
+            }
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.PASS;
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public Screen createScreen(ContainerSawbench container, Player player) {
+        return new UISawbench(container, player);
+    }
+
+    @Nullable
+    @Override
+    public AbstractContainerMenu createMenu(CreateMenuContext context) {
+        return new ContainerSawbench(context.getPlayerInventory(), context.getWindowId(), context.hasPos() ? context.getPos() : null);
+    }
+
+
+}

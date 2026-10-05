@@ -1,0 +1,5 @@
+{
+    "parent": "block/block",
+    "loader": "apn:shape_loader",
+    "shapeName": "slab_se"
+}

@@ -1,0 +1,25 @@
+// See https://github.com/elytra/Skeleton/wiki for what all these values mean
+
+ext {
+    group = 'com.summax'
+    projectPackage = 'com.summax.apn'
+    projectName = 'apn'
+
+    useElytraVersionFormat = false
+    version = '0.1.0'
+
+    compoundVersion = '1.10.1-SNAPSHOT'
+    compoundModules = []
+
+    forge = "1.20.1-47.1.70"
+    mappingsChannel = "parchment"
+    mappingsVersion = "2023.07.30-1.20.1"
+}
+
+if (!ext.early) {
+    repositories {
+    }
+
+    dependencies {
+    }
+}

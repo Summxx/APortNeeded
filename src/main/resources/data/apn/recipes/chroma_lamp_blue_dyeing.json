@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "CCC",
+        "CDC",
+        "CCC"
+    ],
+    "key": {
+        "C": {
+            "tag": "apn:chroma_lamp"
+        },
+        "D": {
+            "tag": "forge:dyes/blue"
+        }
+    },
+    "result": {
+        "item": "apn:chroma_lamp_blue",
+        "count": 8
+    }
+}

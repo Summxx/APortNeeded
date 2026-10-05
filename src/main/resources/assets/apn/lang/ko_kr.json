@@ -1,0 +1,11 @@
+{
+    "block.apn.sawbench": "건축가의 톱대",
+    "block.apn.shape": "건축적인 블럭",
+    "item.apn.large_pulley": "큰 도르래",
+    "item.apn.sawblade": "원형 톱날",
+    "item.apn.chisel": "건축가의 끌",
+    "item.apn.hammer": "건축가의 망치",
+    "item.apn.cladding": "피복",
+    "tooltip.apn.base_material": "재료: %s",
+    "tooltip.apn.secondary_material": "부재료: %s"
+}

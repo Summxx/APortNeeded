@@ -1,0 +1,5 @@
+{
+    "parent": "block/block",
+    "loader": "apn:shape_loader",
+    "shapeName": "slope_tile_b2"
+}

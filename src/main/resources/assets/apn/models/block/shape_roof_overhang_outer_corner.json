@@ -1,0 +1,6 @@
+{
+    "parent": "block/block",
+    "loader": "apn:shape_loader",
+    "shapeName": "roof_overhang_outer_corner"
+}
+                          

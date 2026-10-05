@@ -1,0 +1,21 @@
+{
+    "replace": false,
+    "values": [
+        "apn:chroma_lamp_white",
+        "apn:chroma_lamp_orange",
+        "apn:chroma_lamp_magenta",
+        "apn:chroma_lamp_light_blue",
+        "apn:chroma_lamp_yellow",
+        "apn:chroma_lamp_lime",
+        "apn:chroma_lamp_pink",
+        "apn:chroma_lamp_gray",
+        "apn:chroma_lamp_light_gray",
+        "apn:chroma_lamp_cyan",
+        "apn:chroma_lamp_purple",
+        "apn:chroma_lamp_blue",
+        "apn:chroma_lamp_brown",
+        "apn:chroma_lamp_green",
+        "apn:chroma_lamp_red",
+        "apn:chroma_lamp_black"
+    ]
+}

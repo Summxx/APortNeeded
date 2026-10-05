@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "SGS",
+        "GDG",
+        "SGS"
+    ],
+    "key": {
+        "S": {
+            "item": "minecraft:smooth_stone"
+        },
+        "G": {
+            "item": "minecraft:glowstone_dust"
+        },
+        "D": {
+            "tag": "forge:dyes/gray"
+        }
+    },
+    "result": {
+        "item": "apn:chroma_lamp_gray",
+        "count": 4
+    }
+}

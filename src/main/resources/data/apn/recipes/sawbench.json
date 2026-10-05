@@ -1,0 +1,79 @@
+{
+    "type": "forge:conditional",
+    "recipes": [
+        {
+            "conditions": [
+                {
+                    "type": "forge:mod_loaded",
+                    "modid": "gtceu"
+                }
+            ],
+            "recipe": {
+                "type": "minecraft:crafting_shaped",
+                "pattern": [
+                    "P*P",
+                    "S0S",
+                    "/d/"
+                ],
+                "key": {
+                    "*": {
+                        "item": "apn:sawblade"
+                    },
+                    "/": {
+                        "tag": "forge:rods/steel"
+                    },
+                    "0": {
+                        "item": "apn:large_pulley"
+                    },
+                    "P": {
+                        "tag": "forge:plates/steel"
+                    },
+                    "S": {
+                        "tag": "forge:screws/steel"
+                    },
+                    "d": {
+                        "tag": "forge:tools/screwdrivers"
+                    }
+                },
+                "result": {
+                    "item": "apn:sawbench"
+                }
+            }
+        },
+        {
+            "conditions": [
+                {
+                    "type": "forge:true"
+                }
+            ],
+            "recipe": {
+                "type": "minecraft:crafting_shaped",
+                "pattern": [
+                    "I*I",
+                    "/0/",
+                    "/_/"
+                ],
+                "key": {
+                    "I": {
+                        "tag": "forge:ingots/iron"
+                    },
+                    "*": {
+                        "item": "apn:sawblade"
+                    },
+                    "/": {
+                        "tag": "forge:rods/wooden"
+                    },
+                    "_": {
+                        "tag": "minecraft:wooden_pressure_plates"
+                    },
+                    "0": {
+                        "item": "apn:large_pulley"
+                    }
+                },
+                "result": {
+                    "item": "apn:sawbench"
+                }
+            }
+        }
+    ]
+}

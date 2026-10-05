@@ -1,0 +1,4 @@
+{
+    "parent": "minecraft:block/block",
+    "loader": "apn:sawbench_loader"
+}

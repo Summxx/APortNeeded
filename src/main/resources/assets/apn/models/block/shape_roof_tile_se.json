@@ -1,0 +1,5 @@
+{
+    "parent": "block/block",
+    "loader": "apn:shape_loader",
+    "shapeName": "roof_tile_se"
+}
