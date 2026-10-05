@@ -1,67 +1,22 @@
 {
-    "type": "forge:conditional",
-    "recipes": [
-        {
-            "conditions": [
-                {
-                    "type": "forge:mod_loaded",
-                    "modid": "gtceu"
-                }
-            ],
-            "recipe": {
-                "type": "minecraft:crafting_shaped",
-                "pattern": [
-                    "IIh",
-                    "osI",
-                    "os "
-                ],
-                "key": {
-                    "I": {
-                        "tag": "forge:ingots/steel"
-                    },
-                    "h": {
-                        "tag": "forge:tools/hammers"
-                    },
-                    "o": {
-                        "tag": "forge:dyes/orange"
-                    },
-                    "s": {
-                        "tag": "forge:rods/wooden"
-                    }
-                },
-                "result": {
-                    "item": "apn:hammer"
-                }
-            }
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "II ",
+        "d/I",
+        "d/ "
+    ],
+    "key": {
+        "I": {
+            "tag": "forge:ingots/iron"
         },
-        {
-            "conditions": [
-                {
-                    "type": "forge:true"
-                }
-            ],
-            "recipe": {
-                "type": "minecraft:crafting_shaped",
-                "pattern": [
-                    "II ",
-                    "d/I",
-                    "d/ "
-                ],
-                "key": {
-                    "I": {
-                        "tag": "forge:ingots/iron"
-                    },
-                    "/": {
-                        "tag": "forge:rods/wooden"
-                    },
-                    "d": {
-                        "tag": "forge:dyes/orange"
-                    }
-                },
-                "result": {
-                    "item": "apn:hammer"
-                }
-            }
+        "/": {
+            "tag": "forge:rods/wooden"
+        },
+        "d": {
+            "tag": "forge:dyes/orange"
         }
-    ]
+    },
+    "result": {
+        "item": "apn:hammer"
+    }
 }

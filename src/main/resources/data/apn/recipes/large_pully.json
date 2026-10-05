@@ -1,58 +1,19 @@
 {
-    "type": "forge:conditional",
-    "recipes": [
-        {
-            "conditions": [
-                {
-                    "type": "forge:mod_loaded",
-                    "modid": "gtceu"
-                }
-            ],
-            "recipe": {
-                "type": "minecraft:crafting_shaped",
-                "pattern": [
-                    " W ",
-                    "W/W",
-                    " W "
-                ],
-                "key": {
-                    "/": {
-                        "tag": "forge:rods/steel"
-                    },
-                    "W": {
-                        "tag": "minecraft:planks"
-                    }
-                },
-                "result": {
-                    "item": "apn:large_pulley"
-                }
-            }
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " W ",
+        "W/W",
+        " W "
+    ],
+    "key": {
+        "W": {
+            "tag": "minecraft:planks"
         },
-        {
-            "conditions": [
-                {
-                    "type": "forge:true"
-                }
-            ],
-            "recipe": {
-                "type": "minecraft:crafting_shaped",
-                "pattern": [
-                    " W ",
-                    "W/W",
-                    " W "
-                ],
-                "key": {
-                    "W": {
-                        "tag": "minecraft:planks"
-                    },
-                    "/": {
-                        "tag": "forge:rods/wooden"
-                    }
-                },
-                "result": {
-                    "item": "apn:large_pulley"
-                }
-            }
+        "/": {
+            "tag": "forge:rods/wooden"
         }
-    ]
+    },
+    "result": {
+        "item": "apn:large_pulley"
+    }
 }

@@ -1,64 +1,19 @@
 {
-    "type": "forge:conditional",
-    "recipes": [
-        {
-            "conditions": [
-                {
-                    "type": "forge:mod_loaded",
-                    "modid": "gtceu"
-                }
-            ],
-            "recipe": {
-                "type": "minecraft:crafting_shaped",
-                "pattern": [
-                    "fPh",
-                    "PRP",
-                    " P "
-                ],
-                "key": {
-                    "P": {
-                        "tag": "forge:plates/steel"
-                    },
-                    "R": {
-                        "tag": "forge:rings/steel"
-                    },
-                    "f": {
-                        "tag": "forge:tools/files"
-                    },
-                    "h": {
-                        "tag": "forge:tools/hammers"
-                    }
-                },
-                "result": {
-                    "item": "apn:sawblade"
-                }
-            }
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " I ",
+        "I/I",
+        " I "
+    ],
+    "key": {
+        "I": {
+            "tag": "forge:ingots/iron"
         },
-        {
-            "conditions": [
-                {
-                    "type": "forge:true"
-                }
-            ],
-            "recipe": {
-                "type": "minecraft:crafting_shaped",
-                "pattern": [
-                    " I ",
-                    "I/I",
-                    " I "
-                ],
-                "key": {
-                    "I": {
-                        "tag": "forge:ingots/iron"
-                    },
-                    "/": {
-                        "tag": "forge:rods/wooden"
-                    }
-                },
-                "result": {
-                    "item": "apn:sawblade"
-                }
-            }
+        "/": {
+            "tag": "forge:rods/wooden"
         }
-    ]
+    },
+    "result": {
+        "item": "apn:sawblade"
+    }
 }

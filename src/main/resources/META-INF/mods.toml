@@ -4,7 +4,7 @@ license = "MIT"
 
 [[mods]]
 modId = "apn"
-version = "0.1.1"
+version = "0.1.2"
 displayName = "A Port Needed"
 authors = "OBS07"
 credits = '''Architecture: based on ArchitectureCraft by gcewing and its ports by TridentMC (Benjamin K), with the models, slope tiles and icons of the GT New Horizons fork.

@@ -3,6 +3,14 @@
 A Forge 1.20.1 mod. It brings back GTNH-era blocks that are missing on newer
 versions.
 
+## ⬇️ Download
+
+**[Download the latest version here](https://github.com/Summxx/APortNeeded/releases)**
+
+1. Open the link above. The newest version is at the top.
+2. Under **Assets**, click the `apn-x.x.x.jar` file to download it (not "Source code").
+3. Put the jar in the `mods` folder of your Forge 1.20.1 instance. On a server, install it on the server **and** on every client.
+
 > **Beta.** This is a personal project and a showcase. It has no permission or endorsement from the original authors.
 > All borrowed content is used under the MIT licence and credited in [CREDITS.md](CREDITS.md).
 
@@ -26,8 +34,8 @@ versions.
 - CB Microblocks support out of the box.
 
 ### Compatibility
-- **GregTech CEu**: when present, the tools and the Sawbench use steel parts and GregTech crafting tools, so they are
-  early game. Without it, iron recipes are used.
+- **Recipes**: simple vanilla recipes (iron, sticks, planks). Modpack makers can replace them with KubeJS or a
+  datapack to fit their progression.
 - **CB Microblocks**: lamps and glass are registered as microblock materials, no config needed.
 - Works on dedicated servers and in multiplayer.
 
