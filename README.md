@@ -1,6 +1,6 @@
 # A Port Needed
 
-A Forge 1.20.1 mod made for the Star Technology modpack. It brings back GTNH-era blocks that are missing on newer
+A Forge 1.20.1 mod. It brings back GTNH-era blocks that are missing on newer
 versions.
 
 > **Beta.** This is a personal project and a showcase. It has no permission or endorsement from the original authors.
