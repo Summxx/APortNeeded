@@ -4,7 +4,7 @@ license = "MIT"
 
 [[mods]]
 modId = "apn"
-version = "0.1.0"
+version = "0.1.1"
 displayName = "A Port Needed"
 authors = "OBS07"
 credits = '''Architecture: based on ArchitectureCraft by gcewing and its ports by TridentMC (Benjamin K), with the models, slope tiles and icons of the GT New Horizons fork.
@@ -12,7 +12,7 @@ Tinted glass: textures from Ztones-Unofficial by OneEyeMaker (GT New Horizons), 
 Chroma lamps: original work.
 All borrowed content is used under the MIT licence, see LICENSE and CREDITS.md in the jar.
 Contact: OBS07 on Discord, @sum_h'''
-description = '''Architectural shapes and decorative blocks from older Minecraft versions, rebuilt for 1.20.1 and made for the Star Technology modpack.
+description = '''Architectural shapes and decorative blocks from older Minecraft versions, rebuilt for 1.20.1 with GregTech modpacks in mind.
 
 Architecture
  - Over 100 shapes cut at the sawbench from almost any block: roofs that join their ridges and valleys, slopes, cylinders, spheres, arches, columns, cornices and railings.

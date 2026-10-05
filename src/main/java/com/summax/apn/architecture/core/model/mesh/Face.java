@@ -7,9 +7,9 @@ import com.summax.apn.architecture.core.math.IVector3Immutable;
 import com.summax.apn.architecture.core.math.IVector3Mutable;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import org.apache.commons.compress.utils.Lists;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -146,7 +146,7 @@ public final class Face<D extends IPolygonData<D>> implements IFace<D> {
     public static class Builder<D extends IPolygonData<D>> {
 
         private final Object2IntMap<IVertex> vertexPool = new Object2IntOpenHashMap<IVertex>();
-        private final List<Function<IFace<D>, IPolygon<D>>> polygons = Lists.newArrayList();
+        private final List<Function<IFace<D>, IPolygon<D>>> polygons = new ArrayList<>();
         private final IVector3Mutable normal = IVector3.ofMutable(0, 0, 0);
 
         public Builder<D> addVertex(IVertex vertex) {
