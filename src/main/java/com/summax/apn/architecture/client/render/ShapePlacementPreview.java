@@ -72,7 +72,7 @@ public class ShapePlacementPreview {
             return;
 
         var material = ComponentMaterial.get(stack);
-        // The same preview is drawn every frame while the player doesn't move: reuse its quads.
+        // Reuse the quads while the target doesn't change.
         if (state != cachedState || !material.equals(cachedMaterial) || cachedQuads == null) {
             var modelData = ModelData.builder()
                     .with(ModelProperties.BASE_MATERIAL, material.safeBase())

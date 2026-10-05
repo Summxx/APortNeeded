@@ -22,8 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Sawbench menu, works like the vanilla stonecutter: a material slot, a result slot and a shape selection made through
- * menu button clicks.
+ * Sawbench menu, works like the vanilla stonecutter.
  */
 public class ContainerSawbench extends AbstractContainerMenu {
 

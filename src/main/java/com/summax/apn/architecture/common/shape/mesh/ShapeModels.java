@@ -67,6 +67,7 @@ public final class ShapeModels {
      */
     private static final double MAX_OVERHANG = 0.025;
     private static final double EPSILON = 1e-3;
+    private static final double GRID = 192;
     /**
      * Balustrade rails are 2/16 thick, between 5/16 and 7/16 from the centre.
      */
@@ -114,6 +115,12 @@ public final class ShapeModels {
                 if (excess > 0 && excess < MAX_OVERHANG)
                     p[axis] = Math.copySign(0.5, p[axis]);
             }
+        }
+        // Snap float noise so edges line up with other shapes.
+        for (int axis = 0; axis < 3; axis++) {
+            double snapped = Math.round(p[axis] * GRID) / GRID;
+            if (Math.abs(p[axis] - snapped) < 1e-5)
+                p[axis] = snapped;
         }
         return p;
     }

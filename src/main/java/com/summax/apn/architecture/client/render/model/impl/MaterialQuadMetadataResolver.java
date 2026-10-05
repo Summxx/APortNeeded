@@ -24,8 +24,7 @@ public record MaterialQuadMetadataResolver(@NotNull BlockState base,
                                            @NotNull BlockState secondary) implements IQuadMetadataResolver<PolygonData> {
 
     /**
-     * Added to the material's tint index on faces of the secondary material, so the block colour handler knows which
-     * material to colour them like.
+     * Offset added to the tint index of secondary material faces.
      */
     public static final int SECONDARY_TINT_OFFSET = 100;
 
@@ -56,7 +55,7 @@ public record MaterialQuadMetadataResolver(@NotNull BlockState base,
     }
 
     /**
-     * Takes the first quad the material's model draws on each side: its base layer, before any overlay.
+     * Uses the first quad of each side, the base layer.
      */
     private static FaceTexture[] readFaceTextures(BlockState state) {
         var model = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(state);

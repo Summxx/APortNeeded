@@ -1,5 +1,6 @@
 package com.summax.apn.architecture.client.render.model.impl;
 
+import com.summax.apn.architecture.client.render.model.baked.ShapeLighting;
 import com.summax.apn.architecture.client.render.model.baked.BakedQuadContainerProviderMesh;
 import com.summax.apn.architecture.client.render.model.baked.BakedQuadContainerProviderMeshCached;
 import com.summax.apn.architecture.client.render.model.baked.IBakedQuadContainer;
@@ -11,6 +12,7 @@ import com.summax.apn.architecture.common.item.ItemShape;
 import com.summax.apn.architecture.common.item.component.ComponentMaterial;
 import org.jetbrains.annotations.Nullable;
 import com.summax.apn.architecture.common.shape.EnumShape;
+import com.summax.apn.architecture.common.shape.ShapeTable;
 import com.summax.apn.architecture.common.shape.ShapeMeshes;
 import com.summax.apn.architecture.core.math.ITrans3;
 import com.summax.apn.architecture.core.model.mesh.PolygonData;
@@ -56,22 +58,30 @@ public class ModelResolverShapeGeneric implements IModelResolver<PolygonData> {
     private final BakedQuadContainerProviderMesh<String, PolygonData> mesh;
     private final EnumShape shape;
     /**
-     * Roofs joining their neighbours: one mesh per connections mask, built on first use.
+     * One mesh per connection mask, built on first use.
      */
     private final AtomicReferenceArray<BakedQuadContainerProviderMesh<String, PolygonData>> roofVariants =
             new AtomicReferenceArray<>(16);
 
     public ModelResolverShapeGeneric(EnumShape shape) {
         this.shape = shape;
-        this.mesh = new BakedQuadContainerProviderMeshCached<>(ShapeMeshes.getMesh(shape), BakedQuadContainerProviderMesh.TextureMode.MODEL);
+        this.mesh = new BakedQuadContainerProviderMeshCached<>(ShapeMeshes.getMesh(shape), BakedQuadContainerProviderMesh.TextureMode.MODEL,
+                shape.getDefinition() != null && shape.getDefinition().kind() != ShapeTable.Kind.ROOF);
+    }
+
+    /**
+     * @return true if the shape has sloped faces that need the lighting around it.
+     */
+    public boolean needsLighting() {
+        return this.mesh.hasSlopedFaces();
     }
 
     /**
      * @return the quads of a roof joining the neighbours given by the connections mask (RoofConnections).
      */
-    public IBakedQuadContainer getQuads(BlockState base, BlockState secondary, ITrans3 transform, int connections) {
+    public IBakedQuadContainer getQuads(BlockState base, BlockState secondary, ITrans3 transform, int connections, @Nullable ShapeLighting lighting) {
         if (connections == 0)
-            return this.mesh.getQuads(null, new MaterialQuadMetadataResolver(base, secondary), transform);
+            return this.mesh.getQuads(null, new MaterialQuadMetadataResolver(base, secondary), transform, lighting);
         var variant = this.roofVariants.get(connections);
         if (variant == null) {
             var roof = RoofMeshes.create(this.shape.getName(), connections);
@@ -80,7 +90,7 @@ public class ModelResolverShapeGeneric implements IModelResolver<PolygonData> {
             if (!this.roofVariants.compareAndSet(connections, null, variant))
                 variant = this.roofVariants.get(connections);
         }
-        return variant.getQuads(null, new MaterialQuadMetadataResolver(base, secondary), transform);
+        return variant.getQuads(null, new MaterialQuadMetadataResolver(base, secondary), transform, lighting);
     }
 
     private static TextureAtlasSprite getTextureForState(BlockState state) {

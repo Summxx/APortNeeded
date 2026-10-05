@@ -30,7 +30,8 @@ versions.
 ### Decoration
 - 16 Chroma Lamps: coloured lamps that all give light level 15, with neon textures.
 - 16 tinted glass blocks.
-- Built-in LabPBR textures: emissive lamps, reflective glass.
+- Built-in LabPBR textures: emissive lamps, smooth non-metallic glass. The built-in **APN: Classic Tinted Glass**
+  resource pack (Options > Resource Packs) brings back the older reflective glass look.
 - CB Microblocks support out of the box.
 
 ### Compatibility
@@ -38,6 +39,78 @@ versions.
   datapack to fit their progression.
 - **CB Microblocks**: lamps and glass are registered as microblock materials, no config needed.
 - Works on dedicated servers and in multiplayer.
+
+## Guide
+
+### Sawbench
+Put a block in the Sawbench, pick a page (Roofing, Rounded, Classical, Arches, Railings, Other) and a shape, then take
+the result. Each shape costs a set number of blocks and gives a set number of items. Almost any full block works as a
+material. Glowing variants (light level 15) and the Cladding sheet are on the Other page.
+
+### Placing shapes
+- **Floor or ceiling:** aim at the top of a block for a shape sitting upright, at the bottom of a block for an
+  upside-down one.
+- **Walls:** a shape placed against a wall still sits on the floor: aim at the top half of the wall for upside down,
+  the bottom half for upright.
+- **Sneak to place against the wall:** sneaking puts the base of the shape against the face you aim at. Use it for
+  vertical or sideways slopes, slope tiles and roofs.
+- **Rotation:** the shape turns towards the edge (or corner) of the face nearest to where you aim.
+- **Next to another shape:** a shape placed against another shape copies its orientation so roofs, cornices and
+  architraves line up. Sneak to ignore the neighbour.
+- **Banisters:** placed on stairs (vanilla or shapes), they follow the stairs. Railings go to the edge of the block
+  nearest to where you aim.
+
+### Tools
+- **Hammer:** right click turns the shape a quarter. On railings it first switches them to the other edge. Sneak +
+  right click moves the shape to its next side.
+- **Chisel:** right click near the edge of a roof breaks or restores the connection with the roof on that side. Right
+  click in the centre takes the cladding off. It also breaks glass, glass panes, glowstone and ice and gives them back.
+- **Cladding:** cut a block into Cladding at the Sawbench, then right click a roof, slope or shape with secondary faces
+  to cover its sloped faces with that material. Sides and base keep the main material.
+
+### Roofs
+Roof tiles, corners, ridges and valleys join their neighbours automatically, including hip roofs. Use the chisel to
+disconnect two roofs that should stay separate.
+
+### Decoration
+- **Chroma Lamps:** glowstone dust, smooth stone and a dye give 4 lamps. Surround a dye with 8 lamps of any colour to
+  recolour them.
+- **Tinted glass:** 8 glass around an amethyst shard give 8 tinted glass. Use a stonecutter to switch between the 16
+  variants.
+
+### Resource pack and shaders
+- The tinted glass specular maps only use smoothness, so it looks like plain glass with any shader pack.
+- For the older reflective, slightly glowing glass, enable the built-in **APN: Classic Tinted Glass** pack in
+  Options > Resource Packs.
+- Shapes are lit per vertex from the light around them, so shadows and torch light blend between neighbouring blocks,
+  with or without shaders.
+
+### Recipes for modpacks
+Recipes are plain vanilla. Replace them with KubeJS or a datapack: `apn:sawbench`, `apn:sawblade`,
+`apn:large_pulley`, `apn:hammer`, `apn:chisel`, `apn:chroma_lamp_<colour>`, `apn:tinted_glass_<0-15>`.
+
+## Changelog
+
+### 0.1.3
+- Fixed inverted shadows on full faces of shapes, such as the base of slopes placed against a wall.
+- Sloped and curved faces are now lit per vertex from the light around them: shadows blend between blocks, follow
+  overhangs and update with torches.
+- Smooth shading on cylinders, spheres and other curved shapes without shaders.
+- Fixed triangle faces looking darker with shader packs.
+- Fixed hairline gaps between B slope tiles.
+- Tinted glass specular maps now only use smoothness, so the glass no longer looks metallic or mirror-like with
+  shaders. The older look is available as the built-in **APN: Classic Tinted Glass** resource pack.
+- Shader pack detection fixed, faster chunk building for shapes without sloped faces, lighter chunk loading and
+  smaller saves on servers.
+
+### 0.1.2
+- Recipes are now plain vanilla so the mod fits any modpack. Pack makers can change them with KubeJS or a datapack.
+
+### 0.1.1
+- Fixed a crash on dedicated servers at startup.
+
+### 0.1.0
+- First public beta.
 
 ## Disclaimer
 The architecture module started from TridentMC's 1.21 ArchitectureCraft rewrite. AI-assisted coding ("vibe coding")

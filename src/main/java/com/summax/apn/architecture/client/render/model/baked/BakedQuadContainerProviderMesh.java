@@ -44,11 +44,30 @@ public class BakedQuadContainerProviderMesh<I, D extends IPolygonData<D>> implem
 
     private final IMesh<I, D> mesh;
     private final TextureMode textureMode;
+    /**
+     * Shade sloped faces from their normal instead of their side, used for curved models.
+     */
+    private final boolean normalShading;
+    private final boolean hasSlopedFaces;
+
+    /**
+     * @return true if the mesh has faces off the block axes, only those need a ShapeLighting.
+     */
+    public boolean hasSlopedFaces() {
+        return this.hasSlopedFaces;
+    }
     private final Map<ITrans3Immutable, IMesh<I, D>> cache;
 
     public BakedQuadContainerProviderMesh(IMesh<I, D> mesh, TextureMode textureMode) {
+        this(mesh, textureMode, false);
+    }
+
+    public BakedQuadContainerProviderMesh(IMesh<I, D> mesh, TextureMode textureMode, boolean normalShading) {
         this.mesh = mesh;
         this.textureMode = textureMode;
+        this.normalShading = normalShading;
+        this.hasSlopedFaces = mesh.getFaces().stream().flatMap(f -> f.getPolygons().stream())
+                .anyMatch(polygon -> !isAligned(computeNormal(polygon)));
         // Chunk building is multithreaded, so we need a concurrent map here.
         this.cache = Maps.newConcurrentMap();
         this.cache.put(ITrans3Immutable.IDENTITY, mesh);
@@ -61,22 +80,35 @@ public class BakedQuadContainerProviderMesh<I, D extends IPolygonData<D>> implem
 
     @Override
     public IBakedQuadContainer getQuads(@Nullable I partId, LevelAccessor level, BlockPos pos, BlockState state, IQuadMetadataResolver<D> metadataResolver, ITrans3 transform, boolean forceRebuild) {
-        return this.getQuadsTakesAll(partId, level, pos, state, null, metadataResolver, transform, forceRebuild);
+        return this.getQuadsTakesAll(partId, level, pos, state, null, metadataResolver, transform, ShaderPacks.inUse(), null);
     }
 
     @Override
     public IBakedQuadContainer getQuads(@Nullable I partId, ItemStack stack, IQuadMetadataResolver<D> metadataResolver, ITrans3 transform, boolean forceRebuild) {
-        return this.getQuadsTakesAll(partId, null, null, null, stack, metadataResolver, transform, forceRebuild);
+        return this.getQuadsTakesAll(partId, null, null, null, stack, metadataResolver, transform, ShaderPacks.inUse(), null);
     }
 
     @Override
     public IBakedQuadContainer getQuads(@Nullable I partId, IQuadMetadataResolver<D> metadataResolver, ITrans3 transform, boolean forceRebuild) {
-        return this.getQuadsTakesAll(partId, null, null, null, null, metadataResolver, transform, forceRebuild);
+        return this.bakeQuads(partId, metadataResolver, transform, ShaderPacks.inUse());
     }
 
-    private final IBakedQuadContainer getQuadsTakesAll(@Nullable I partId, @Nullable LevelAccessor level, @Nullable BlockPos pos, @Nullable BlockState state, @Nullable ItemStack stack, IQuadMetadataResolver<D> metadataResolver, ITrans3 transform, boolean forceRebuild) {
-        // We ignore forceRebuild here, as we're not actually caching the resulting containers themselves.
+    /**
+     * Gets the quads for a placed block, sloped faces get lit from the given lighting.
+     */
+    public IBakedQuadContainer getQuads(@Nullable I partId, IQuadMetadataResolver<D> metadataResolver, ITrans3 transform, @Nullable ShapeLighting lighting) {
+        if (lighting == null || !this.hasSlopedFaces)
+            return this.getQuads(partId, metadataResolver, transform, false);
+        return this.getQuadsTakesAll(partId, null, null, null, null, metadataResolver, transform, ShaderPacks.inUse(), lighting);
+    }
+
+    protected IBakedQuadContainer bakeQuads(@Nullable I partId, IQuadMetadataResolver<D> metadataResolver, ITrans3 transform, boolean shaders) {
+        return this.getQuadsTakesAll(partId, null, null, null, null, metadataResolver, transform, shaders, null);
+    }
+
+    private final IBakedQuadContainer getQuadsTakesAll(@Nullable I partId, @Nullable LevelAccessor level, @Nullable BlockPos pos, @Nullable BlockState state, @Nullable ItemStack stack, IQuadMetadataResolver<D> metadataResolver, ITrans3 transform, boolean shaders, @Nullable ShapeLighting lighting) {
         var containerBuilder = new BakedQuadContainer.Builder();
+        var sample = new float[3];
         // Cull by the mesh's cull face, the quad direction is only used for lighting.
         final var cullDirection = new AtomicReference<Direction>();
         var quadBaker = new QuadBakingVertexConsumer(bakedQuad -> containerBuilder.addForDirection(bakedQuad, cullDirection.get()));
@@ -96,30 +128,94 @@ public class BakedQuadContainerProviderMesh<I, D extends IPolygonData<D>> implem
                 quadBaker.setSprite(texture);
                 quadBaker.setTintIndex(tintIndex);
                 quadBaker.setDirection(direction);
-                quadBaker.setShade(true);
-                quadBaker.setHasAmbientOcclusion(true);
+                boolean aligned = isAligned(normal);
+                boolean lit = lighting != null && !aligned;
+                boolean baked = !aligned && !shaders && (lit || this.normalShading);
+                float diffuse = baked ? diffuseShade(normal) : 1;
+                quadBaker.setShade(!baked && !lit);
+                quadBaker.setHasAmbientOcclusion(!baked && !lit);
                 boolean projected = this.textureMode == TextureMode.PROJECTED || (polygonData.textureIndex() & 1) != 0;
                 var uvs = projected ? projectedUVs(polygon, direction) : null;
-                var startIndex = 0;
-                if (polygon.getVertexCount() == 3) {
-                    startIndex = -1;
-                }
-                for (int i = startIndex; i < vertexCount; i++) {
-                    var vertexIndex = Math.max(0, i);
+                // Repeat the last vertex of triangles, shaders build the tangent from the first three.
+                int start = aligned && vertexCount == 4 ? vanillaStart(polygon, direction) : 0;
+                for (int i = 0; i < 4; i++) {
+                    var vertexIndex = vertexCount == 4 ? (start + i) % 4 : Math.min(i, vertexCount - 1);
                     var v = polygon.getVertex(vertexIndex);
                     double u = uvs != null ? uvs[vertexIndex * 2] : v.getU();
                     double uvV = uvs != null ? uvs[vertexIndex * 2 + 1] : v.getV();
+                    int blockLight = 0, skyLight = 0;
+                    float brightness = diffuse;
+                    if (lit) {
+                        lighting.sample(v.getX(), v.getY(), v.getZ(), normal.x(), normal.y(), normal.z(), sample);
+                        blockLight = Math.min(240, Math.round(sample[0] * 16));
+                        skyLight = Math.min(240, Math.round(sample[1] * 16));
+                        if (!shaders)
+                            brightness *= sample[2];
+                    }
+                    int shade = Math.round(255 * brightness);
                     quadBaker.vertex(v.getX(), v.getY(), v.getZ())
-                            .color(-1)
+                            .color(shade, shade, shade, 255)
                             .normal(normal.x(), normal.y(), normal.z())
                             .uv(texture.getU(u * 16F), texture.getV(uvV * 16F))
-                            .uv2(1, 0)
+                            .uv2(blockLight, skyLight)
                             .overlayCoords(1, 0)
                             .endVertex();
                 }
             }
         }
         return containerBuilder.build();
+    }
+
+    /**
+     * Full faces get their AO corners in vanilla's vertex order, so we start on the same corner as vanilla does.
+     */
+    private static int vanillaStart(IPolygon<?> polygon, Direction direction) {
+        double minX = 1, minY = 1, minZ = 1, maxX = 0, maxY = 0, maxZ = 0;
+        for (int i = 0; i < 4; i++) {
+            var v = polygon.getVertex(i);
+            minX = Math.min(minX, v.getX());
+            minY = Math.min(minY, v.getY());
+            minZ = Math.min(minZ, v.getZ());
+            maxX = Math.max(maxX, v.getX());
+            maxY = Math.max(maxY, v.getY());
+            maxZ = Math.max(maxZ, v.getZ());
+        }
+        double nan = Double.NaN;
+        double[] corner = switch (direction) {
+            case DOWN -> new double[]{minX, nan, maxZ};
+            case UP -> new double[]{minX, nan, minZ};
+            case NORTH -> new double[]{maxX, maxY, nan};
+            case SOUTH -> new double[]{minX, maxY, nan};
+            case WEST -> new double[]{nan, maxY, minZ};
+            case EAST -> new double[]{nan, maxY, maxZ};
+        };
+        int best = 0;
+        double bestDistance = Double.MAX_VALUE;
+        for (int i = 0; i < 4; i++) {
+            var v = polygon.getVertex(i);
+            double[] p = {v.getX(), v.getY(), v.getZ()};
+            double distance = 0;
+            for (int axis = 0; axis < 3; axis++) {
+                if (!Double.isNaN(corner[axis]))
+                    distance += Math.abs(p[axis] - corner[axis]);
+            }
+            if (distance < bestDistance) {
+                best = i;
+                bestDistance = distance;
+            }
+        }
+        return best;
+    }
+
+    private static boolean isAligned(Vector3f n) {
+        return Math.max(Math.abs(n.x()), Math.max(Math.abs(n.y()), Math.abs(n.z()))) > 0.999F;
+    }
+
+    /**
+     * Same as the game's directional shade, but for any normal.
+     */
+    private static float diffuseShade(Vector3f n) {
+        return Math.min(n.x() * n.x() * 0.6F + n.y() * n.y() * ((3.0F + n.y()) / 4.0F) + n.z() * n.z() * 0.8F, 1.0F);
     }
 
     /**

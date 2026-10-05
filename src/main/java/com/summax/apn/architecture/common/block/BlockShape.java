@@ -247,7 +247,7 @@ public class BlockShape<T extends BlockShape<T>> extends BlockArchitecture imple
             return level.getExistingBlockEntity(pos.relative(dir)) instanceof BlockEntityShape neighbour
                     && neighbour.getEffectiveBaseMaterialState() == material;
         }
-        // Other blocks only ask when they are not solid themselves (glass, leaves...): hide them behind a full side.
+        // Hide other blocks behind a full side.
         return footprint.isFull() && material.canOcclude();
     }
 
@@ -288,7 +288,7 @@ public class BlockShape<T extends BlockShape<T>> extends BlockArchitecture imple
 
     @Override
     public List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
-        // Shapes have no loot table: drop the shape made of its material.
+        // Drop the shape with its material.
         if (params.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof BlockEntityShape shape) {
             return List.of(ItemShape.createStack(this.getShape(), shape.getEffectiveBaseMaterialState()));
         }

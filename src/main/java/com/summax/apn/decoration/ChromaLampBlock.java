@@ -4,8 +4,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 
 /**
- * Chroma lamp: a flat, unshaded, full bright block of solid colour that glows at full
- * light level. Each colour has its own flat texture so the colour survives in microblocks and copycat blocks.
+ * A full bright block of solid colour, glowing at light level 15.
  */
 public class ChromaLampBlock extends Block {
 

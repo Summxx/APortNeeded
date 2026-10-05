@@ -19,9 +19,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /**
- * Development only rendering test, enabled with -Dapn.autotest=true (./gradlew runClientTest -PrenderTest for shaders): builds a scene of shapes next to
- * vanilla blocks, takes screenshots from fixed viewpoints and quits, so lighting can be checked without playing.
- * Screenshots land in run/screenshots/apn-test-*.png.
+ * Development only rendering test, enabled with -Dapn.autotest=true.
  */
 public final class AutoTest {
 

@@ -23,22 +23,27 @@ public class BakedQuadContainerProviderMeshCached<I, D extends IPolygonData<D>> 
      */
     private final Map<Key<I, D>, IBakedQuadContainer> cache = new ConcurrentHashMap<>();
 
-    private record Key<I, D>(@Nullable I partId, IQuadMetadataResolver<D> resolver, ITrans3 transform) {
+    private record Key<I, D>(@Nullable I partId, IQuadMetadataResolver<D> resolver, ITrans3 transform, boolean shaders) {
     }
 
     public BakedQuadContainerProviderMeshCached(IMesh<I, D> mesh, TextureMode textureMode) {
         super(mesh, textureMode);
     }
 
+    public BakedQuadContainerProviderMeshCached(IMesh<I, D> mesh, TextureMode textureMode, boolean normalShading) {
+        super(mesh, textureMode, normalShading);
+    }
+
     @Override
     public IBakedQuadContainer getQuads(@Nullable I partId, IQuadMetadataResolver<D> metadataResolver, ITrans3 transform, boolean forceRebuild) {
-        var key = new Key<>(partId, metadataResolver, transform);
+        boolean shaders = ShaderPacks.inUse();
+        var key = new Key<>(partId, metadataResolver, transform, shaders);
         if (forceRebuild) {
-            var quadContainer = super.getQuads(partId, metadataResolver, transform, true);
+            var quadContainer = this.bakeQuads(partId, metadataResolver, transform, shaders);
             this.cache.put(key, quadContainer);
             return quadContainer;
         }
-        return this.cache.computeIfAbsent(key, k -> super.getQuads(partId, metadataResolver, transform, false));
+        return this.cache.computeIfAbsent(key, k -> this.bakeQuads(partId, metadataResolver, transform, shaders));
     }
 
 }

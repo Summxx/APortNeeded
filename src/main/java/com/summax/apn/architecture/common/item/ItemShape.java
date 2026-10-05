@@ -39,7 +39,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -88,7 +87,7 @@ public class ItemShape extends ItemBlockArchitecture {
 
     @Nonnull
     public static BlockState getStateFromStack(ItemStack stack) {
-        // The material comes from item NBT which can be anything (creative, commands): never use air or fluids.
+        // Item NBT can hold anything, never use air or fluids.
         var base = ComponentMaterial.get(stack).safeBase();
         return base.isAir() || !base.getFluidState().isEmpty() ? Blocks.OAK_PLANKS.defaultBlockState() : base;
     }

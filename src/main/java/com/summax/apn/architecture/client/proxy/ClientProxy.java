@@ -61,8 +61,7 @@ public class ClientProxy extends CommonProxy {
     }
 
     /**
-     * Shapes take the colour of their material on its tinted faces (grass, leaves...): the baked quads carry the
-     * material's tint index, offset for the secondary material.
+     * Colours tinted faces like their material (grass, leaves...).
      */
     @SubscribeEvent
     public void onRegisterBlockColors(RegisterColorHandlersEvent.Block e) {
@@ -94,7 +93,7 @@ public class ClientProxy extends CommonProxy {
                 return e.getBlockColors().getColor(state, null, null,
                         secondary ? tintIndex - MaterialQuadMetadataResolver.SECONDARY_TINT_OFFSET : tintIndex);
             } catch (RuntimeException ignored) {
-                // Some modded colour handlers expect a level: keep the texture's own colour.
+                // Some colour handlers need a level, fall back to no tint.
                 return -1;
             }
         }, items);

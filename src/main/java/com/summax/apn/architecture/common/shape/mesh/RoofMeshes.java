@@ -14,9 +14,10 @@ public final class RoofMeshes {
     private static final int OUTER = 1;
     private static final int INNER = 2;
 
-    private static final double[] UNIT_Y = {0, 1, 0}, UNIT_NY = {0, -1, 0};
+    private static final double[] UNIT_NY = {0, -1, 0};
     private static final double[] UNIT_X = {1, 0, 0}, UNIT_NX = {-1, 0, 0};
     private static final double[] UNIT_Z = {0, 0, 1}, UNIT_NZ = {0, 0, -1};
+    private static final double ONE_THIRD = 1D / 3D, TWO_THIRDS = 2D / 3D;
     private static final double[] UNIT_PYNZ = {0, 0.707, -0.707}, UNIT_PYPZ = {0, 0.707, 0.707};
     private static final double[] UNIT_PXPY = {0.707, 0.707, 0}, UNIT_NXPY = {-0.707, 0.707, 0};
 
@@ -166,33 +167,33 @@ public final class RoofMeshes {
     }
 
     private void renderSlopeB1() {
-        renderVariableSlope(1.0, 0.66666);
-        renderVariableFaceLeft(0, 0.66666);
-        renderVariableTriangleLeft(0.66666, 0.33333);
-        renderVariableFaceRight(0, 0.66666);
-        renderVariableTriangleRight(0.66666, 0.33333);
-        renderVariableFrontFace(0.66666);
+        renderVariableSlope(1.0, TWO_THIRDS);
+        renderVariableFaceLeft(0, TWO_THIRDS);
+        renderVariableTriangleLeft(TWO_THIRDS, ONE_THIRD);
+        renderVariableFaceRight(0, TWO_THIRDS);
+        renderVariableTriangleRight(TWO_THIRDS, ONE_THIRD);
+        renderVariableFrontFace(TWO_THIRDS);
         bottomQuad();
         backQuad();
     }
 
     private void renderSlopeB2() {
-        renderVariableSlope(0.66666, 0.33333);
-        renderVariableFaceLeft(0, 0.33333);
-        renderVariableTriangleLeft(0.33333, 0.33333);
-        renderVariableFaceRight(0, 0.33333);
-        renderVariableTriangleRight(0.33333, 0.33333);
-        renderVariableFrontFace(0.33333);
+        renderVariableSlope(TWO_THIRDS, ONE_THIRD);
+        renderVariableFaceLeft(0, ONE_THIRD);
+        renderVariableTriangleLeft(ONE_THIRD, ONE_THIRD);
+        renderVariableFaceRight(0, ONE_THIRD);
+        renderVariableTriangleRight(ONE_THIRD, ONE_THIRD);
+        renderVariableFrontFace(ONE_THIRD);
         bottomQuad();
-        renderVariableBackFace(0.66666);
+        renderVariableBackFace(TWO_THIRDS);
     }
 
     private void renderSlopeB3() {
-        renderVariableSlope(0.33333, 0);
-        renderVariableTriangleLeft(0, 0.33333);
-        renderVariableTriangleRight(0, 0.33333);
+        renderVariableSlope(ONE_THIRD, 0);
+        renderVariableTriangleLeft(0, ONE_THIRD);
+        renderVariableTriangleRight(0, ONE_THIRD);
         bottomQuad();
-        renderVariableBackFace(0.33333);
+        renderVariableBackFace(ONE_THIRD);
     }
 
     private void renderSlopeC1() {

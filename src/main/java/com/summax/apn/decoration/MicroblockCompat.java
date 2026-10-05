@@ -12,10 +12,8 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.function.Supplier;
 
 /**
- * Registers the decoration blocks as CB Microblocks materials when CB Multipart is installed, so packs don't have to
- * list them in custom-micromaterials.cfg. Done through reflection to avoid any dependency on CB Multipart.
- * <p>
- * Don't also list these blocks in custom-micromaterials.cfg: registering the same material twice fails.
+ * Registers the decoration blocks as CB Microblocks materials through reflection, if CB Multipart is installed.
+ * Don't also list them in custom-micromaterials.cfg, registering a material twice fails.
  */
 public final class MicroblockCompat {
 

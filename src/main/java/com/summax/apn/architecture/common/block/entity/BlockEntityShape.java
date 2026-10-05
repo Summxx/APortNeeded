@@ -63,17 +63,13 @@ public class BlockEntityShape extends BlockEntityArchitecture {
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         this.writeMaterials(tag);
-        tag.putBoolean("LightChecked", this.lightChecked);
     }
 
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
         this.readMaterials(tag);
-        this.lightChecked = tag.getBoolean("LightChecked");
     }
-
-    private boolean lightChecked;
 
     private void writeMaterials(CompoundTag tag) {
         tag.put("BaseMaterial", NbtUtils.writeBlockState(this.getEffectiveBaseMaterialState()));
@@ -87,17 +83,6 @@ public class BlockEntityShape extends BlockEntityArchitecture {
         this.baseMaterialState = tag.contains("BaseMaterial") ? NbtUtils.readBlockState(blocks, tag.getCompound("BaseMaterial")) : null;
         this.secondaryMaterialState = tag.contains("SecondaryMaterial") ? NbtUtils.readBlockState(blocks, tag.getCompound("SecondaryMaterial")) : null;
         this.disabledConnections = tag.getInt("Disconnected");
-    }
-
-    @Override
-    public void onLoad() {
-        super.onLoad();
-        // Recheck the light once so shapes from older saves don't render black.
-        if (!this.lightChecked && this.level != null && !this.level.isClientSide()) {
-            this.lightChecked = true;
-            this.level.getLightEngine().checkBlock(this.worldPosition);
-            this.setChanged();
-        }
     }
 
     @Override

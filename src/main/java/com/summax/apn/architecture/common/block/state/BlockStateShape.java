@@ -62,7 +62,7 @@ public class BlockStateShape extends BlockStateArchitecture {
             var spin = this.cachedOrientation.getValue(ShapeOrientationPropertySpin.INSTANCE);
             var name = ((BlockShape<?>) this.getBlock()).getShape().getName();
             for (var direction : Direction.values()) {
-                // Roof sides that join their neighbours change shape with them: leave their faces alone.
+                // Roof sides joining neighbours change shape, don't hide anything there.
                 boolean variable = facing != null && spin != null && RoofConnections.dependsOnNeighbour(name,
                         facing.value().get3DDataValue(), spin.value().getQuarterTurns(), direction);
                 cached[direction.ordinal()] = oriented != null && !variable

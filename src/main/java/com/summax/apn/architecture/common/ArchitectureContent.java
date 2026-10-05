@@ -143,7 +143,6 @@ public class ArchitectureContent {
     }
 
     private <T extends BlockEntity> BlockEntityType<T> registerBlockEntity(RegisterEvent.RegisterHelper<BlockEntityType<?>> registry, BlockEntityType.BlockEntitySupplier<T> tileSupplier, String id, Block... blocks) {
-        ResourceLocation key = new ResourceLocation(REGISTRY_PREFIX, id);
         BlockEntityType<T> tileType = BlockEntityType.Builder.of(tileSupplier, blocks).build(null);
         registry.register(new ResourceLocation(REGISTRY_PREFIX, id), tileType);
         return tileType;

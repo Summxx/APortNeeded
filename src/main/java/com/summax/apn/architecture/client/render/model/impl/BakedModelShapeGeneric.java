@@ -1,5 +1,6 @@
 package com.summax.apn.architecture.client.render.model.impl;
 
+import com.summax.apn.architecture.client.render.model.baked.ShapeLighting;
 import net.minecraft.client.renderer.RenderType;
 import com.summax.apn.architecture.common.block.state.BlockStateArchitecture;
 import com.summax.apn.architecture.common.model.ModelProperties;
@@ -90,25 +91,33 @@ public class BakedModelShapeGeneric implements IModelResolverBaked<PolygonData> 
     }
 
     /**
-     * Roofs check their neighbours when the chunk is built so they can join ridges and valleys.
+     * Captures the lighting for sloped faces and the neighbours roofs connect to.
      */
     @Override
     @NotNull
     public ModelData getModelData(@NotNull BlockAndTintGetter level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull ModelData modelData) {
-        if (RoofMeshes.connectionSides(this.shapeName) == null)
+        int connections = RoofMeshes.connectionSides(this.shapeName) == null ? 0 : RoofConnections.at(level, pos, state);
+        boolean lit = this.resolver.needsLighting();
+        if (connections == 0 && !lit)
             return modelData;
-        int connections = RoofConnections.at(level, pos, state);
-        return connections == 0 ? modelData : modelData.derive().with(ModelProperties.ROOF_CONNECTIONS, connections).build();
+        var builder = modelData.derive();
+        if (lit)
+            builder.with(ShapeLighting.PROPERTY, ShapeLighting.capture(level, pos));
+        if (connections != 0)
+            builder.with(ModelProperties.ROOF_CONNECTIONS, connections);
+        return builder.build();
     }
 
     @Override
     @NotNull
     public List<BakedQuad> getQuads(@Nullable BlockStateArchitecture state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData extraData, @Nullable RenderType renderType) {
         var connections = extraData.get(ModelProperties.ROOF_CONNECTIONS);
+        var lighting = extraData.get(ShapeLighting.PROPERTY);
         var base = extraData.get(ModelProperties.BASE_MATERIAL);
-        if (connections == null || connections == 0 || state == null || base == null)
+        if (state == null || base == null || (connections == null && lighting == null))
             return IModelResolverBaked.super.getQuads(state, side, rand, extraData, renderType);
         var secondary = extraData.get(ModelProperties.SECONDARY_MATERIAL);
-        return this.resolver.getQuads(base, secondary != null ? secondary : base, state.getTransform(), connections).quadsFor(side);
+        return this.resolver.getQuads(base, secondary != null ? secondary : base, state.getTransform(),
+                connections != null ? connections : 0, lighting).quadsFor(side);
     }
 }

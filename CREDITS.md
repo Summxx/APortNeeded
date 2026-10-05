@@ -15,8 +15,7 @@ The architecture module is based on ArchitectureCraft:
 - Textures from **Ztones-Unofficial** by **OneEyeMaker** for GT New Horizons (Copyright (c) 2023 OneEyeMaker, MIT):
   https://github.com/GTNewHorizons/Ztones-Unofficial
 - Based on the original Ztones by riciJak.
-- Tinted glass 14 and 15 use original plain-colour textures; the glass PBR values reproduce the look the
-  GT New Horizons community gets with its reflections resource pack.
+- Tinted glass 14 and 15 use original plain-colour textures. The glass specular maps are original (smoothness only).
 
 ## Chroma lamps
 - Original implementation with original textures.

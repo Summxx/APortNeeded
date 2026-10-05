@@ -19,7 +19,7 @@ public class Mesh<I, D extends IPolygonData<D>> implements IMesh<I, D> {
     private final ImmutableMap<I, IPart<I, D>> parts;
     private final ImmutableList<IFace<D>> faces;
     /**
-     * Built on first use: only targeting and voxelization need it, the transformed copies made for rendering never do.
+     * Built on first use, rendering never needs it.
      */
     private volatile AABBTree<IPolygon<D>> aabbTree;
 

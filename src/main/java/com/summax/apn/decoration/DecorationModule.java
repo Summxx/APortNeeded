@@ -71,5 +71,6 @@ public final class DecorationModule {
         ITEMS.register(modEventBus);
         TABS.register(modEventBus);
         modEventBus.addListener(MicroblockCompat::onRegister);
+        modEventBus.addListener(ClassicGlassPack::onAddPackFinders);
     }
 }
