@@ -91,6 +91,9 @@ Recipes are plain vanilla. Replace them with KubeJS or a datapack: `apn:sawbench
 
 ## Changelog
 
+### 0.1.4
+- Fixed the sawbench menu on dedicated servers: picking a shape on some pages jumped back to the Cylinder.
+
 ### 0.1.3
 - Fixed inverted shadows on full faces of shapes, such as the base of slopes placed against a wall.
 - Sloped and curved faces are now lit per vertex from the light around them: shadows blend between blocks, follow

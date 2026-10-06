@@ -6,7 +6,7 @@ ext {
     projectName = 'apn'
 
     useElytraVersionFormat = false
-    version = '0.1.3'
+    version = '0.1.4'
 
     compoundVersion = '1.10.1-SNAPSHOT'
     compoundModules = []

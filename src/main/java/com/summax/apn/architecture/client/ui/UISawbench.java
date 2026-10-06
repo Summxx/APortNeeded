@@ -181,7 +181,7 @@ public class UISawbench extends AbstractContainerScreen<ContainerSawbench> {
             int page = (int) (py / PAGE_MENU_ROW_HEIGHT);
             if (page < ShapePage.PAGES.size()) {
                 this.menu.selectPage(page);
-                this.sendSelection();
+                this.sendButton(ContainerSawbench.PAGE_BUTTON_START + page);
                 return true;
             }
         }
@@ -189,15 +189,14 @@ public class UISawbench extends AbstractContainerScreen<ContainerSawbench> {
         int index = this.getShapeIndexAt(mouseX, mouseY);
         if (index >= 0 && index < ShapePage.PAGES.get(this.menu.getSelectedPage()).size()) {
             this.menu.selectShape(this.menu.getSelectedPage(), index);
-            this.sendSelection();
+            this.sendButton(index);
             return true;
         }
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
-    private void sendSelection() {
+    private void sendButton(int id) {
         if (this.minecraft != null && this.minecraft.gameMode != null) {
-            int id = this.menu.getSelectedPage() * ContainerSawbench.PAGE_STRIDE + this.menu.getSelectedSlot();
             this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, id);
         }
     }

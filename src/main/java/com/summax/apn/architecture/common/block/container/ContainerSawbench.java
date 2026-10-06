@@ -30,10 +30,8 @@ public class ContainerSawbench extends AbstractContainerMenu {
     public static final int RESULT_SLOT = 1;
     private static final int PLAYER_SLOTS_START = 2;
     private static final int PLAYER_SLOTS_END = PLAYER_SLOTS_START + 36;
-    /**
-     * Button ids are encoded as page * PAGE_STRIDE + slot.
-     */
-    public static final int PAGE_STRIDE = 64;
+    // Button ids are sent as a byte. Below 100: shape slot, 100+: page.
+    public static final int PAGE_BUTTON_START = 100;
 
     private final ContainerLevelAccess access;
     private final Container materialContainer = new SimpleContainer(1) {
@@ -157,11 +155,17 @@ public class ContainerSawbench extends AbstractContainerMenu {
 
     @Override
     public boolean clickMenuButton(@NotNull Player player, int id) {
-        int page = id / PAGE_STRIDE;
-        int slot = id % PAGE_STRIDE;
-        if (page < 0 || page >= ShapePage.PAGES.size() || slot >= ShapePage.PAGES.get(page).size())
+        if (id >= PAGE_BUTTON_START) {
+            int page = id - PAGE_BUTTON_START;
+            if (page >= ShapePage.PAGES.size())
+                return false;
+            this.selectPage(page);
+            return true;
+        }
+        int page = this.selectedPage.get();
+        if (id < 0 || page < 0 || page >= ShapePage.PAGES.size() || id >= ShapePage.PAGES.get(page).size())
             return false;
-        this.selectShape(page, slot);
+        this.selectShape(page, id);
         return true;
     }
 
