@@ -27,6 +27,8 @@ package com.summax.apn.architecture.common;
 import com.summax.apn.architecture.client.proxy.ClientProxy;
 import com.summax.apn.architecture.common.proxy.CommonProxy;
 import com.summax.apn.APortNeeded;
+import com.summax.apn.architecture.common.compat.HeldShapeMaterial;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -51,6 +53,7 @@ public class ArchitectureMod {
         modEventBus.addListener(this::onSetup);
         modEventBus.register(CONTENT);
         modEventBus.register(PROXY);
+        MinecraftForge.EVENT_BUS.addListener(HeldShapeMaterial::onEntityPlace);
     }
 
     public void onSetup(FMLCommonSetupEvent e) {

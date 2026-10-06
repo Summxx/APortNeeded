@@ -91,6 +91,10 @@ Recipes are plain vanilla. Replace them with KubeJS or a datapack: `apn:sawbench
 
 ## Changelog
 
+### 0.1.5
+- Shapes keep their material when placed with Effortless Building or pasted with the Building Gadgets 2 Copy-Paste Gadget.
+- Tinted glass and chroma lamps can be used as FramedBlocks camos.
+
 ### 0.1.4
 - Fixed the sawbench menu on dedicated servers: picking a shape on some pages jumped back to the Cylinder.
 

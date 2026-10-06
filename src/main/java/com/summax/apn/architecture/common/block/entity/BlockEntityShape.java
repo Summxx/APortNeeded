@@ -71,6 +71,24 @@ public class BlockEntityShape extends BlockEntityArchitecture {
         this.readMaterials(tag);
     }
 
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        if (this.baseMaterialState == null && this.level != null && !this.level.isClientSide()) {
+            var tag = PendingMaterials.take(this.level, this.worldPosition);
+            if (tag != null) {
+                this.readMaterials(tag);
+                this.setChanged();
+            }
+        }
+    }
+
+    public CompoundTag getMaterialsTag() {
+        var tag = new CompoundTag();
+        this.writeMaterials(tag);
+        return tag;
+    }
+
     private void writeMaterials(CompoundTag tag) {
         tag.put("BaseMaterial", NbtUtils.writeBlockState(this.getEffectiveBaseMaterialState()));
         this.getSecondaryMaterialState().ifPresent(s -> tag.put("SecondaryMaterial", NbtUtils.writeBlockState(s)));

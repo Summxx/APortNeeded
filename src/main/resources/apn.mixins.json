@@ -1,0 +1,13 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "com.summax.apn.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "BuildingUtilsMixin",
+    "CopyModeMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

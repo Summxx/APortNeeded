@@ -68,6 +68,7 @@ minecraft {
             // Remap the refmaps of mixin mods (Embeddium, Oculus) to development names.
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            args '-mixin.config=apn.mixins.json'
 
             mods {
                 mainMod {
@@ -87,6 +88,7 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
+            args '-mixin.config=apn.mixins.json'
 
             // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'REGISTRIES'
@@ -112,7 +114,12 @@ dependencies {
     }
 }
 
-jar.finalizedBy('reobfJar')
+jar {
+    manifest {
+        attributes 'MixinConfigs': 'apn.mixins.json'
+    }
+    finalizedBy('reobfJar')
+}
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
