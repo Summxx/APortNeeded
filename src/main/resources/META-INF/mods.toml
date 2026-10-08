@@ -1,17 +1,19 @@
 modLoader = "javafml"
 loaderVersion = "[47,)"
 license = "MIT"
+issueTrackerURL = "https://github.com/Summxx/APortNeeded/issues"
 
 [[mods]]
 modId = "apn"
 version = "0.1.6"
 displayName = "A Port Needed"
+displayURL = "https://github.com/Summxx/APortNeeded"
 authors = "OBS07"
 credits = '''Architecture: based on ArchitectureCraft by gcewing and its ports by TridentMC (Benjamin K), with the models, slope tiles and icons of the GT New Horizons fork.
 Tinted glass: textures from Ztones-Unofficial by OneEyeMaker (GT New Horizons), after Ztones by riciJak.
 Chroma lamps: original work.
 All borrowed content is used under the MIT licence, see LICENSE and CREDITS.md in the jar.
-Contact: OBS07 on Discord, @sum_h'''
+Discord: https://discord.gg/ZgXeQqePy3'''
 description = '''Architectural shapes and decorative blocks from older Minecraft versions, rebuilt for 1.20.1 with GregTech modpacks in mind.
 
 Architecture
@@ -21,7 +23,7 @@ Architecture
 Decoration
  - 16 tinted glass and 16 chroma lamps, ready for PBR shaders and usable as CB Microblocks.
 
-Beta release. Feedback and bug reports: @sum_h on Discord.'''
+Feedback and bug reports: https://discord.gg/ZgXeQqePy3'''
 
 [[dependencies.apn]]
 modId = "forge"
