@@ -25,6 +25,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import com.summax.apn.architecture.common.ArchitectureMod;
+import com.summax.apn.architecture.common.compat.EffortlessCompat;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -146,8 +148,12 @@ public class BlockShape<T extends BlockShape<T>> extends BlockArchitecture imple
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        if (context.getPlayer() == null) {
-            ArchitectureLog.error("BlockShape#getStateForPlacement called with a null player, this should not happen.");
+        var player = context.getPlayer();
+        // Effortless Building works out the state without a player, on the client: use the local one.
+        if (player == null && EffortlessCompat.isFindingState() && context.getLevel().isClientSide())
+            player = ArchitectureMod.PROXY.getClientPlayer();
+        if (player == null) {
+            ArchitectureLog.debug("BlockShape#getStateForPlacement called without a player, using the default orientation.");
             return this.defaultBlockState();
         }
         ShapeOrientation safeShapeOrientation = null;
@@ -156,7 +162,7 @@ public class BlockShape<T extends BlockShape<T>> extends BlockArchitecture imple
                     this.self(),
                     context.getLevel(),
                     context.getClickedPos(),
-                    context.getPlayer(),
+                    player,
                     new BlockHitResult(
                             context.getClickLocation(),
                             context.getClickedFace(),

@@ -101,6 +101,9 @@ Progress is tracked on the [Discord](https://discord.gg/ZgXeQqePy3).
 
 ## Changelog
 
+### 0.1.7
+- Shapes placed with Effortless Building keep their material and face the right way.
+
 ### 0.1.6
 - Fixed dark slope faces with normal maps under shaders.
 

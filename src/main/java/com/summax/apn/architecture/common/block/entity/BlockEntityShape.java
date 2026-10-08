@@ -196,6 +196,10 @@ public class BlockEntityShape extends BlockEntityArchitecture {
      *
      * @return The secondary material state of this shape.
      */
+    public boolean hasBaseMaterial() {
+        return this.baseMaterialState != null;
+    }
+
     public Optional<BlockState> getSecondaryMaterialState() {
         return Optional.ofNullable(this.secondaryMaterialState);
     }

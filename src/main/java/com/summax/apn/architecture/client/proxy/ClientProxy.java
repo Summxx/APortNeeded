@@ -41,6 +41,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.Item;
 import com.summax.apn.architecture.common.item.component.ComponentMaterial;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.player.Player;
 
 public class ClientProxy extends CommonProxy {
 
@@ -109,6 +111,11 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void registerHandlers() {
         super.registerHandlers();
+    }
+
+    @Override
+    public Player getClientPlayer() {
+        return Minecraft.getInstance().player;
     }
 
 }

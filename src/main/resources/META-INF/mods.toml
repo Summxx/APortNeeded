@@ -5,7 +5,7 @@ issueTrackerURL = "https://github.com/Summxx/APortNeeded/issues"
 
 [[mods]]
 modId = "apn"
-version = "0.1.6"
+version = "0.1.7"
 displayName = "A Port Needed"
 displayURL = "https://github.com/Summxx/APortNeeded"
 authors = "OBS07"

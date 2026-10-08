@@ -5,7 +5,9 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BuildingUtilsMixin",
-    "CopyModeMixin"
+    "CopyModeMixin",
+    "EffortlessBlockEntryMixin",
+    "EffortlessPlacerMixin"
   ],
   "injectors": {
     "defaultRequire": 0

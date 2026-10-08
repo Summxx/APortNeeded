@@ -32,6 +32,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModList;
 
 
 /**
@@ -53,7 +54,8 @@ public class ArchitectureMod {
         modEventBus.addListener(this::onSetup);
         modEventBus.register(CONTENT);
         modEventBus.register(PROXY);
-        MinecraftForge.EVENT_BUS.addListener(HeldShapeMaterial::onEntityPlace);
+        if (ModList.get().isLoaded("effortlessbuilding"))
+            MinecraftForge.EVENT_BUS.addListener(HeldShapeMaterial::onEntityPlace);
     }
 
     public void onSetup(FMLCommonSetupEvent e) {

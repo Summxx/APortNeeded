@@ -24,8 +24,10 @@
 
 package com.summax.apn.architecture.common.proxy;
 
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import org.jetbrains.annotations.Nullable;
 
 public class CommonProxy {
 
@@ -34,5 +36,13 @@ public class CommonProxy {
 
     public void registerHandlers() {
         MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    /**
+     * @return the local player on the client, null on a dedicated server.
+     */
+    @Nullable
+    public Player getClientPlayer() {
+        return null;
     }
 }
