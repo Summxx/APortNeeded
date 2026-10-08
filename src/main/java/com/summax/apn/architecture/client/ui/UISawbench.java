@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Sawbench screen, layout taken from the 1.12 version of the mod.
+ * Sawbench screen.
  */
 public class UISawbench extends AbstractContainerScreen<ContainerSawbench> {
 

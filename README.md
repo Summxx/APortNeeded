@@ -91,6 +91,9 @@ Recipes are plain vanilla. Replace them with KubeJS or a datapack: `apn:sawbench
 
 ## Changelog
 
+### 0.1.6
+- Fixed dark slope faces with normal maps under shaders.
+
 ### 0.1.5
 - Shapes keep their material when placed with Effortless Building or pasted with the Building Gadgets 2 Copy-Paste Gadget.
 - Tinted glass and chroma lamps can be used as FramedBlocks camos.

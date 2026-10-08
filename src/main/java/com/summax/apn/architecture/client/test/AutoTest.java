@@ -113,8 +113,7 @@ public final class AutoTest {
                     level.setBlockAndUpdate(ORIGIN.offset(x, y, z), Blocks.AIR.defaultBlockState());
             }
         }
-        // Row of a vanilla block and shapes with their lateral faces towards the camera (north), lit by a chroma
-        // lamp standing in front of them, to compare light gradients.
+        // Vanilla block and shapes in a row, lit by a lamp in front.
         level.setBlockAndUpdate(ORIGIN.offset(-3, 0, 0), quartz);
         level.setBlockAndUpdate(ORIGIN.offset(-5, 0, 0), Blocks.STONE_STAIRS.defaultBlockState()
                 .setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.WEST));

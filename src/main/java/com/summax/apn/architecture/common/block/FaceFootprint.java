@@ -5,9 +5,7 @@ import com.summax.apn.architecture.core.model.mesh.IPolygon;
 import net.minecraft.core.Direction;
 
 /**
- * The part of one side of the block a shape covers with faces lying on that side, sampled on a grid. Two shapes
- * touching on a side can hide each other's faces there when one footprint covers the other, like vanilla does for full
- * block faces.
+ * The part of a block side covered by a shape's faces, sampled on a grid.
  */
 public final class FaceFootprint {
 

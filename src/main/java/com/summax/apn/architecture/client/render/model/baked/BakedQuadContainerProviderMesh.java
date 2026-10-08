@@ -124,7 +124,6 @@ public class BakedQuadContainerProviderMesh<I, D extends IPolygonData<D>> implem
                         : Direction.getNearest(normal.x(), normal.y(), normal.z());
                 var texture = metadataResolver.getTexture(level, pos, state, stack, polygonData);
                 var tintIndex = metadataResolver.getTintIndex(level, pos, state, stack, polygonData);
-                var vertexCount = polygon.getVertexCount();
                 quadBaker.setSprite(texture);
                 quadBaker.setTintIndex(tintIndex);
                 quadBaker.setDirection(direction);
@@ -136,10 +135,9 @@ public class BakedQuadContainerProviderMesh<I, D extends IPolygonData<D>> implem
                 quadBaker.setHasAmbientOcclusion(!baked && !lit);
                 boolean projected = this.textureMode == TextureMode.PROJECTED || (polygonData.textureIndex() & 1) != 0;
                 var uvs = projected ? projectedUVs(polygon, direction) : null;
-                // Repeat the last vertex of triangles, shaders build the tangent from the first three.
-                int start = aligned && vertexCount == 4 ? vanillaStart(polygon, direction) : 0;
+                var order = vertexOrder(polygon, aligned ? direction : null);
                 for (int i = 0; i < 4; i++) {
-                    var vertexIndex = vertexCount == 4 ? (start + i) % 4 : Math.min(i, vertexCount - 1);
+                    var vertexIndex = order[i];
                     var v = polygon.getVertex(vertexIndex);
                     double u = uvs != null ? uvs[vertexIndex * 2] : v.getU();
                     double uvV = uvs != null ? uvs[vertexIndex * 2 + 1] : v.getV();
@@ -164,6 +162,34 @@ public class BakedQuadContainerProviderMesh<I, D extends IPolygonData<D>> implem
             }
         }
         return containerBuilder.build();
+    }
+
+    // Vertices 0-2 and 1-3 must both form a triangle, direction is null for sloped faces.
+    private static int[] vertexOrder(IPolygon<?> polygon, @Nullable Direction direction) {
+        if (polygon.getVertexCount() == 3)
+            return new int[]{0, 1, 2, 0};
+        int start = direction != null ? vanillaStart(polygon, direction) : 0;
+        var order = new int[]{start, (start + 1) % 4, (start + 2) % 4, (start + 3) % 4};
+        if (!flat(polygon, order[0], order[1], order[2]) && !flat(polygon, order[1], order[2], order[3]))
+            return order;
+        // A quad with a corner on an edge is a triangle, drop that corner.
+        for (int i = 0; i < 4; i++) {
+            if (flat(polygon, (i + 3) % 4, i, (i + 1) % 4)) {
+                int a = (i + 1) % 4, b = (i + 2) % 4, c = (i + 3) % 4;
+                return new int[]{a, b, c, a};
+            }
+        }
+        return order;
+    }
+
+    private static boolean flat(IPolygon<?> polygon, int i, int j, int k) {
+        var a = polygon.getVertex(i);
+        var b = polygon.getVertex(j);
+        var c = polygon.getVertex(k);
+        double ux = b.getX() - a.getX(), uy = b.getY() - a.getY(), uz = b.getZ() - a.getZ();
+        double vx = c.getX() - a.getX(), vy = c.getY() - a.getY(), vz = c.getZ() - a.getZ();
+        double cx = uy * vz - uz * vy, cy = uz * vx - ux * vz, cz = ux * vy - uy * vx;
+        return cx * cx + cy * cy + cz * cz < 1e-12;
     }
 
     /**

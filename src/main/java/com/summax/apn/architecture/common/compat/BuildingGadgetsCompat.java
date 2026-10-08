@@ -13,6 +13,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -47,10 +48,17 @@ public final class BuildingGadgetsCompat {
             var tags = new ArrayList<Object>();
             if (!empty && tag.contains("copystart") && tag.contains("copyend")) {
                 var start = NbtUtils.readBlockPos(tag.getCompound("copystart"));
-                var end = NbtUtils.readBlockPos(tag.getCompound("copyend"));
-                for (var pos : BlockPos.betweenClosed(start, end)) {
-                    if (level.getBlockEntity(pos) instanceof BlockEntityShape shape)
-                        tags.add(newTagPos.newInstance(shape.getMaterialsTag(), pos.subtract(start)));
+                var box = BoundingBox.fromCorners(start, NbtUtils.readBlockPos(tag.getCompound("copyend")));
+                for (int cx = box.minX() >> 4; cx <= box.maxX() >> 4; cx++) {
+                    for (int cz = box.minZ() >> 4; cz <= box.maxZ() >> 4; cz++) {
+                        var chunk = level.getChunkSource().getChunkNow(cx, cz);
+                        if (chunk == null)
+                            continue;
+                        for (var be : chunk.getBlockEntities().values()) {
+                            if (be instanceof BlockEntityShape shape && box.isInside(be.getBlockPos()))
+                                tags.add(newTagPos.newInstance(shape.getMaterialsTag(), be.getBlockPos().subtract(start)));
+                        }
+                    }
                 }
             }
             var uuid = getUuid.invoke(null, gadget);
