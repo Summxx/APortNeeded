@@ -3,6 +3,8 @@
 A Forge 1.20.1 mod. It brings back GTNH-era blocks that are missing on newer
 versions.
 
+**[Join the Discord](https://discord.gg/ZgXeQqePy3)** for updates, the roadmap, feedback and bug reports.
+
 ## ⬇️ Download
 
 **[Download the latest version here](https://github.com/Summxx/APortNeeded/releases)**
@@ -89,6 +91,14 @@ disconnect two roofs that should stay separate.
 Recipes are plain vanilla. Replace them with KubeJS or a datapack: `apn:sawbench`, `apn:sawblade`,
 `apn:large_pulley`, `apn:hammer`, `apn:chisel`, `apn:chroma_lamp_<colour>`, `apn:tinted_glass_<0-15>`.
 
+## Roadmap
+Planned, by priority:
+1. CurseForge release
+2. Catwalks port (awaiting permission from the original developer)
+3. Strips and posts for slopes, at the same angle as each slope
+
+Progress is tracked on the [Discord](https://discord.gg/ZgXeQqePy3).
+
 ## Changelog
 
 ### 0.1.6
@@ -139,7 +149,7 @@ The mod jar is written to `build/libs/`. `./gradlew runClient` and `./gradlew ru
 or server.
 
 ## Contact
-Author: **OBS07**. Feedback and bug reports on Discord: **@sum_h**
+Author: **OBS07**. Feedback and bug reports on the [A Port Needed Discord](https://discord.gg/ZgXeQqePy3).
 
 ## Licence and credits
 MIT licence, see [LICENSE](LICENSE). Original authors (gcewing, TridentMC, the GT New Horizons team, OneEyeMaker,
