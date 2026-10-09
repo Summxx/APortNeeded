@@ -7,13 +7,16 @@ versions.
 
 ## ⬇️ Download
 
-**[Download the latest version here](https://github.com/Summxx/APortNeeded/releases)**
+- **Stable versions:** [CurseForge](https://www.curseforge.com/minecraft/mc-mods/a-port-needed)
+- **Beta versions:** [GitHub releases](https://github.com/Summxx/APortNeeded/releases) (also has the stable ones)
 
-1. Open the link above. The newest version is at the top.
+To download from GitHub:
+
+1. The newest version is at the top.
 2. Under **Assets**, click the `apn-x.x.x.jar` file to download it (not "Source code").
 3. Put the jar in the `mods` folder of your Forge 1.20.1 instance. On a server, install it on the server **and** on every client.
 
-> **Beta.** This is a personal project and a showcase. It has no permission or endorsement from the original authors.
+> This is a personal project and a showcase. It has no permission or endorsement from the original authors.
 > All borrowed content is used under the MIT licence and credited in [CREDITS.md](CREDITS.md).
 
 ## Content
@@ -93,9 +96,8 @@ Recipes are plain vanilla. Replace them with KubeJS or a datapack: `apn:sawbench
 
 ## Roadmap
 Planned, by priority:
-1. CurseForge release
-2. Catwalks port (awaiting permission from the original developer)
-3. Strips and posts for slopes, at the same angle as each slope
+1. Catwalks port (awaiting permission from the original developer)
+2. Strips and posts for slopes, at the same angle as each slope
 
 Progress is tracked on the [Discord](https://discord.gg/ZgXeQqePy3).
 
