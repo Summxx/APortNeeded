@@ -96,8 +96,7 @@ Recipes are plain vanilla. Replace them with KubeJS or a datapack: `apn:sawbench
 
 ## Roadmap
 Planned, by priority:
-1. Catwalks port (awaiting permission from the original developer)
-2. Strips and posts for slopes, at the same angle as each slope
+1. Strips and posts for slopes, at the same angle as each slope
 
 Progress is tracked on the [Discord](https://discord.gg/ZgXeQqePy3).
 
